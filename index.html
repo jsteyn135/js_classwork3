@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <script src="https://unpkg.com/vue@next"></script>
     <link rel="stylesheet" href="styles/styles.css">
 
 
@@ -13,20 +13,21 @@
 
 <body>
 
-    <div>
-        <form>
+    <div id="app">
+        <form @submit.prevent="searchGoogleBooks">
             <fieldset class="border">
                 <legend class="w-auto">Google Book Search</legend>
                 <div class="row form-group">
                     <label for="txtSearch" class="col-sm-1 col-form-label"> keyword: </label>
                     <div class="col-sm-5 col-lg-4">
-                        <input type="text" id="txtSearch" name="txtSearch" class="form-control">
+                        <input type="text" id="txtSearch" name="txtSearch" class="form-control" 
+                        v-model="keyword">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="button" class="btn btn-primary" onclick="searchGoogleBooks()">search</button>
+                        <button type="submit" class="btn btn-primary" >search</button>
                         <button type="reset" class="btn btn-secondary">Reset</button>
 
                     </div>
@@ -37,12 +38,22 @@
 
             </fieldset>
         </form>
+        <div id="mainDiv" >
+            <div class="row col-sm-5" v-if="result!= null">found {{(result != null)? result.totalItems:''}}</div>
+            <div class="row">
+
+                <book-display v-if="result != null" v-for="(book, index) in result.items" :key="book.id" :book="JSON.stringify(book)"></book-display>
+            </div>
+
+            
+
+        </div>
     </div>
 
 
 
 
-    <div id="mainDiv"></div>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -55,7 +66,12 @@
         crossorigin="anonymous"></script>
 
 
-    <script src="js/script.js"></script>
+    <!--<script src="js/script.js"></script>-->
+    <script src="js/main.js"></script>
+    <script src="js/components/bookDisplay.js"></script>
+    <script>
+        const mountedApp = app.mount("#app");
+    </script>
 </body>
 <footer>
 
